@@ -8,9 +8,11 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
     <title>생삼겹살 팝니다</title>
+    <!-- jQuery CDN 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -36,17 +38,55 @@
         .picture {
             display: block;
             margin-left: calc(30%);
-            border-radius:20px;
-            margin-bottom:10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
         }
 
         .center {
             margin-left: calc(38%);
         }
+
+        .rate {
+            font-size: small;
+            margin-bottom: 10px;
+        }
     </style>
 
     <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "https://api.manana.kr/exchange/rate.json",
+                data: {},
+                success: function (response) {
+                    let USDKRW = response[1]["rate"];
+                    $('#rate').append("현재 환율 : " + USDKRW);
+                }
+            })
+        })
+
         function purchase() {
+            let username1 = $('#username').val();
+            let quantity1 = $('#quantity').val();
+            let address1 = $('#address').val();
+            let phone1 = $('#phone').val();
+
+            if (username1 == '') {
+                alert('주문자 성함을 입력해주세요.');
+                return
+            }
+            if (quantity1 == '') {
+                alert('수량을 입력해주세요.');
+                return
+            }
+            if (address1 == '') {
+                alert('주소를 입력해주세요.');
+                return
+            }
+            if (phone1 == '') {
+                alert('전화번호를 입력해주세요.');
+                return
+            }
             alert('주문이 완료되었습니다.');
         }
     </script>
@@ -63,16 +103,18 @@
         <p>
             한돈 냉장 생삼겹살 (구이용)
         </p>
+        <div id="rate" class="rate">
+        </div>
         <div>
             <h2 class="h4 mb-3 font-weight-bold">주문하기</h2>
 
             <div class="mb-3">
                 <label for="username">주문자 성함</label>
-                <input type="text" class="form-control" id="username" placeholder="예 : 홍길동" required>
+                <input type="text" class="form-control" id="username" placeholder="예 : 홍길동">
             </div>
             <div class="mb-3">
                 <label for="quantity">수량</label>
-                <select class="custom-select d-block w-100" id="quantity" required>
+                <select class="custom-select d-block w-100" id="quantity">
                     <option value>수량을 선택해주세요</option>
                     <option>1</option>
                     <option>2</option>
@@ -88,14 +130,14 @@
             </div>
             <div class="mb-3">
                 <label for="address">주소</label>
-                <input type="text" class="form-control" id="address" placeholder="예 : 경기도 성남시 분당구 정자동 1-1" required>
+                <input type="text" class="form-control" id="address" placeholder="예 : 경기도 성남시 분당구 정자동 1-1">
             </div>
             <div class="mb-3">
                 <label for="phone">전화번호</label>
-                <input type="text" class="form-control" id="phone" placeholder="000-0000-0000" required>
+                <input type="text" class="form-control" id="phone" placeholder="000-0000-0000">
             </div>
         </div>
-        <button class="btn btn-primary center" onclick="purchase()">주문하기</button>
+        <button class="btn btn-primary center" onclick="purchase()" type="button">주문하기</button>
     </form>
 </body>
 
