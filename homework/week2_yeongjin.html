@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>생삼겹살 팝니다</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 15px;
+            padding-bottom: 10px;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .picture {
+            display: block;
+            margin-left: calc(30%);
+            border-radius:20px;
+            margin-bottom:10px;
+        }
+
+        .center {
+            margin-left: calc(38%);
+        }
+    </style>
+
+    <script>
+        function purchase() {
+            alert('주문이 완료되었습니다.');
+        }
+    </script>
+
+</head>
+
+<body>
+    <form class="form-signin">
+        <img src="https://shop-phinf.pstatic.net/20181217_31/hosannafood_15450460266520yitL_JPEG/68353206295085599_455504156.jpg?type=m510"
+            data-src="https://shop-phinf.pstatic.net/20181217_31/hosannafood_15450460266520yitL_JPEG/68353206295085599_455504156.jpg?type=m510"
+            class="picture" alt="삼겹살" width="50%">
+
+        <h1 class="h3 mb-3 font-weight-bold">생삼겹살</h1> <span>가격 : 10,000원 / 400g</span>
+        <p>
+            한돈 냉장 생삼겹살 (구이용)
+        </p>
+        <div>
+            <h2 class="h4 mb-3 font-weight-bold">주문하기</h2>
+
+            <div class="mb-3">
+                <label for="username">주문자 성함</label>
+                <input type="text" class="form-control" id="username" placeholder="예 : 홍길동" required>
+            </div>
+            <div class="mb-3">
+                <label for="quantity">수량</label>
+                <select class="custom-select d-block w-100" id="quantity" required>
+                    <option value>수량을 선택해주세요</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="address">주소</label>
+                <input type="text" class="form-control" id="address" placeholder="예 : 경기도 성남시 분당구 정자동 1-1" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone">전화번호</label>
+                <input type="text" class="form-control" id="phone" placeholder="000-0000-0000" required>
+            </div>
+        </div>
+        <button class="btn btn-primary center" onclick="purchase()">주문하기</button>
+    </form>
+</body>
+
+</html>
