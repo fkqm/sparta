@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>생삼겹살 팝니다</title>
+    <!-- jQuery CDN 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: -ms-flexbox;
+            display: block;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 15px;
+            padding-bottom: 10px;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .picture {
+            display: block;
+            margin-left: calc(30%);
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .center {
+            margin-left: calc(38%);
+        }
+
+        .rate {
+            font-size: small;
+            margin-bottom: 10px;
+        }
+        .table {
+            width : 100%;
+            max-width: 600px;
+            margin : auto;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "https://api.manana.kr/exchange/rate.json",
+                data: {},
+                success: function (response) {
+                    let USDKRW = response[1]["rate"];
+                    $('#rate').append("현재 환율 : " + USDKRW);
+                }
+            })
+        listing();
+        })
+
+        function purchase() {
+            let username_receive = $('#username').val();
+            let quantity_receive = $('#quantity').val();
+            let address_receive = $('#address').val();
+            let phone_receive = $('#phone').val();
+
+            if (username_receive == '') {
+                alert('주문자 성함을 입력해주세요.');
+                $('#username').focus();
+                return
+            }
+            if (quantity_receive == '') {
+                alert('수량을 입력해주세요.');
+                $('#quantity').focus();
+                return
+            }
+            if (address_receive == '') {
+                alert('주소를 입력해주세요.');
+                $('#address').focus();
+                return
+            }
+            if (phone_receive == '') {
+                alert('전화번호를 입력해주세요.');
+                $('#phone').focus();
+                return
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/shop",
+                data: { username_give: username_receive, quantity_give: quantity_receive, address_give : address_receive, phone_give : phone_receive },
+                success: function (response) { // 성공하면
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+                        window.location.reload();
+                    } else {
+                        alert('서버 오류!');
+                    }
+                }
+            })
+        }
+
+        function listing(){
+            $.ajax({
+                type: "GET",
+                url: "/shop",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let purchases = response['purchases'];
+                        for (let i = 0; i < purchases.length; i++) {
+                            make_purchase(purchases[i]['username'], purchases[i]['quantity'], purchases[i]['address'], purchases[i]['phone'])
+                        }
+                    }
+                    else {
+                        alert('데이터를 불러오지 못했습니다.')
+                    }
+                }
+
+            })
+        }
+
+        function make_purchase(username, quantity, address, phone) {
+            let temp_html =  `<tr>
+      <td>${username}</th>
+      <td>${quantity}</td>
+      <td>${address}</td>
+      <td>${phone}</td>
+    </tr>`;
+            $('#purchases-box').append(temp_html);
+        }
+    </script>
+
+</head>
+
+<body>
+    <form class="form-signin">
+        <img src="https://shop-phinf.pstatic.net/20181217_31/hosannafood_15450460266520yitL_JPEG/68353206295085599_455504156.jpg?type=m510"
+            data-src="https://shop-phinf.pstatic.net/20181217_31/hosannafood_15450460266520yitL_JPEG/68353206295085599_455504156.jpg?type=m510"
+            class="picture" alt="삼겹살" width="50%">
+
+        <h1 class="h3 mb-3 font-weight-bold">생삼겹살</h1> <span>가격 : 10,000원 / 400g</span>
+        <p>
+            한돈 냉장 생삼겹살 (구이용)
+        </p>
+        <div id="rate" class="rate">
+        </div>
+        <div>
+            <h2 class="h4 mb-3 font-weight-bold">주문하기</h2>
+
+            <div class="mb-3">
+                <label for="username">주문자 성함</label>
+                <input type="text" class="form-control" id="username" placeholder="예 : 홍길동">
+            </div>
+            <div class="mb-3">
+                <label for="quantity">수량</label>
+                <select class="custom-select d-block w-100" id="quantity">
+                    <option value>수량을 선택해주세요</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="address">주소</label>
+                <input type="text" class="form-control" id="address" placeholder="예 : 경기도 성남시 분당구 정자동 1-1">
+            </div>
+            <div class="mb-3">
+                <label for="phone">전화번호</label>
+                <input type="text" class="form-control" id="phone" placeholder="000-0000-0000">
+            </div>
+        </div>
+        <button class="btn btn-primary center" onclick="purchase()" type="button">주문하기</button>
+    </form>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">주문자 명</th>
+            <th scope="col">수량</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+          </tr>
+        </thead>
+        <tbody id="purchases-box">
+          
+        </tbody>
+      </table>
+
+</body>
+
+</html>
